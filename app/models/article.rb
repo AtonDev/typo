@@ -92,6 +92,26 @@ class Article < Content
                                :send_pings, :send_notifications,
                                :published_at=, :just_published?])
 
+  def merge_with(other_article_id)
+    
+    if(self.id != other_article_id and Article.exists?(other_article_id))
+    
+      @other_article = Article.find_by_id(other_article_id)
+      self.body += @other_article.body
+
+      @other_article.comments.each do |c|
+        self.comments << c
+      end      
+      
+      self.save!
+      Article.delete(other_article_id)
+      
+      return true
+    end
+    
+    return false
+  end
+
   include Article::States
 
   class << self
