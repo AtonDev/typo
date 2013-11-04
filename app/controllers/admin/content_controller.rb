@@ -30,7 +30,7 @@ class Admin::ContentController < Admin::BaseController
   def merge
     @target = params[:merge_with]
     @article = Article.find(params[:current])
-    if @article.merge(@target)
+    if @article.merge_with(@target)
       flash[:notice] = "Merge successful"
     else
       flash[:warn] = "Merge failed"
